@@ -29,4 +29,4 @@ def list(stop: int, start: int = 0, inc: int = 1):
 
 @app.get('/dependency/{stop}')
 def dependency(cq: QueryParams = Depends()):
-    return cq 
+    return {"queries" : cq} 
