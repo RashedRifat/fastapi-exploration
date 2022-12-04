@@ -1,8 +1,18 @@
 from typing import Union
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Header, HTTPException
 from dependencies.query import QueryParams
+from routers import background
 
+# Define a global dependency 
+async def verify_token(x_token : str = Header()):
+    if x_token != "secret-value":
+        raise HTTPException(status_code=400, detail="X-Token Header Invalid")
+    return x_token
+
+# Add a global dependency to the application 
+# app = FastAPI(dependencies=[Depends(verify_token)])
 app = FastAPI()
+app.include_router(background.router, tags=['Background'])
 
 @app.get("/")
 def hello():
